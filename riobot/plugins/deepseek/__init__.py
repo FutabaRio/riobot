@@ -22,7 +22,7 @@ client = AsyncOpenAI(
     base_url="https://api.deepseek.com",
 )
 # 创建消息处理器
-chat = on_command(rule=to_me(), priority=10)
+chat = on_message(rule=to_me(), priority=10)
 clear_cmd = on_command("clear", aliases={"清除历史"}, priority=1)
 
 @chat.handle()
