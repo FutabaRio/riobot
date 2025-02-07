@@ -264,6 +264,7 @@ async def startup():
                     "time": f"{time_part[:2]}:{time_part[2:4]}",
                     "creator": job.kwargs.get('creator', 0)
                 }
+                print(job.id)
                 print(reminder_jobs[job.id])
             except Exception as e:
                 print(f"⚠️ 加载任务失败 [{job.id}]: {str(e)}")
