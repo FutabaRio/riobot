@@ -54,7 +54,7 @@ def generate_job_id(group_id: int, hour: int, minute: int, content: str) -> str:
 def parse_at_targets(message: str) -> List[str]:
     targets = re.findall(r'\[CQ:at,qq=(\d+)\]', message)
     # 处理@全体成员
-    if '[CQ:at,qq=all]' in message:
+    if '[CQ:at,qq=all]' or '全体' in message:
         targets.append('all')
     return targets
 
@@ -150,7 +150,14 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                     minute=minute,
                     args=(job_id,),
                     id=job_id,
-                    replace_existing=True
+                    replace_existing=True,
+                    kwargs={  # 新增此行
+                        "targets": targets,
+                        "content": content,
+                        "creator": event.user_id,
+                        "group_id": group_id,
+                        "time": f"{hour:02}:{minute:02}"
+                    }
                 )
             except Exception:
                 new_id = f"{job_id}_{hash(os.urandom(4))}"
