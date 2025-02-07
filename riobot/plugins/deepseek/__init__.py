@@ -42,7 +42,7 @@ async def handle_chat(event: MessageEvent):
         # 调用 API
         print(f"messages:{messages}")
         response = await client.chat.completions.create(
-            model="deepseek-reasoner",
+            model="deepseek-chat",
             messages=messages,
             stop=['```'],
             stream=False,
