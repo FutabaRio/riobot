@@ -188,11 +188,11 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
 # ================
 
 
-async def send_reminder(job_id: str):
+async def send_reminder(job_id: str, targets, content, creator, group_id, time):
     """执行提醒发送"""
     if job_id not in reminder_jobs:
         return
-
+    print(f"执行任务 {job_id}，目标: {targets}，内容: {content}，创建者: {creator}，组 ID: {group_id}，时间: {time}")
     job = reminder_jobs[job_id]
     bot = get_bot()
     try:
