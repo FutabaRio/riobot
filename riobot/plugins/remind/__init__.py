@@ -151,7 +151,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                     args=(job_id,),
                     id=job_id,
                     replace_existing=True,
-                    kwargs={  # 新增此行
+                    kw={  # 新增此行
                         "targets": targets,
                         "content": content,
                         "creator": event.user_id,
@@ -167,14 +167,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                     hour=hour,
                     minute=minute,
                     args=(new_id,),
-                    id=new_id,
-                    kwargs={  # 新增此行
-                        "targets": targets,
-                        "content": content,
-                        "creator": event.user_id,
-                        "group_id": group_id,
-                        "time": f"{hour:02}:{minute:02}"
-                    }
+                    id=new_id
                 )
                 job_id = new_id
 
@@ -258,20 +251,20 @@ async def startup():
     # 加载已有任务
     for job in scheduler.get_jobs():
         if job.id.startswith('rem_'):
-            kwargs = job.kwargs
-            print(kwargs)
+            kw = job.kw
+            print(kw)
+            print(job)
+            print(job.id)
             try:
                 _, gid, time_part, _, _ = job.id.split('_', 4)
                 reminder_jobs[job.id] = {
                     "type": "group",
                     "group_id": int(gid),
-                    "targets": kwargs.get('targets'),
-                    "content": kwargs.get('content',''),
+                    "targets": kw.get('targets'),
+                    "content": kw.get('content',''),
                     "time": f"{time_part[:2]}:{time_part[2:4]}",
-                    "creator": kwargs.get('creator', 0)
+                    "creator": kw.get('creator', 0)
                 }
-                print(job.id)
-                print(reminder_jobs[job.id])
             except Exception as e:
                 print(f"⚠️ 加载任务失败 [{job.id}]: {str(e)}")
 
