@@ -8,7 +8,7 @@ from nonebot.adapters.onebot.v11 import (
 from openai import AsyncOpenAI
 from .utils.context import context_manager
 from nonebot.rule import to_me
-
+from dotenv import load_dotenv
 __version__ = "0.2.0"
 __plugin_meta__ = PluginMetadata(
     name="deepseekAPi",
@@ -16,6 +16,7 @@ __plugin_meta__ = PluginMetadata(
     usage="查看详细使用说明",
     supported_adapters={"~onebot.v11"},
 )
+load_dotenv()
 
 # 配置 OpenAI 客户端
 client = AsyncOpenAI(
