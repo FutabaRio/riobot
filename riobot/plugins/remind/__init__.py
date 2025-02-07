@@ -151,7 +151,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                     args=(job_id,),
                     id=job_id,
                     replace_existing=True,
-                    kw={  # 新增此行
+                    kwargs={  # 新增此行
                         "targets": targets,
                         "content": content,
                         "creator": event.user_id,
@@ -251,7 +251,7 @@ async def startup():
     # 加载已有任务
     for job in scheduler.get_jobs():
         if job.id.startswith('rem_'):
-            kw = job.kw
+            kw = job.kwargs
             print(kw)
             print(job)
             print(job.id)
