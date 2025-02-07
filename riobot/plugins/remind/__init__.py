@@ -251,15 +251,16 @@ async def startup():
     # 加载已有任务
     for job in scheduler.get_jobs():
         if job.id.startswith('rem_'):
+            print(job)
             try:
                 _, gid, time_part, _, _ = job.id.split('_', 4)
                 reminder_jobs[job.id] = {
                     "type": "group",
                     "group_id": int(gid),
-                    "targets": job.id.kwargs.get('targets', []),
-                    "content": job.id.kwargs.get('content', ''),
+                    "targets": job.kwargs.get('targets', []),
+                    "content": job.kwargs.get('content', ''),
                     "time": f"{time_part[:2]}:{time_part[2:4]}",
-                    "creator": job.id.kwargs.get('creator', 0)
+                    "creator": job.kwargs.get('creator', 0)
                 }
             except Exception as e:
                 print(f"⚠️ 加载任务失败 [{job.id}]: {str(e)}")
