@@ -49,13 +49,6 @@ async def handle_chat(event: MessageEvent):
             stream=False,
         )
 
-        # 调用 DeepSeek API
-        response = await client.chat.completions.create(
-            model="deepseek-reasoner",
-            messages=messages,
-            stream=False,
-            temperature=0.7,
-        )
         reply = response.choices[0].message.content
         context_manager.add_message(event, "assistant", reply)
         await chat.finish(Message(reply))
