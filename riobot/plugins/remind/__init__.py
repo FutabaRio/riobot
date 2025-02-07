@@ -159,6 +159,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                         "time": f"{hour:02}:{minute:02}"
                     }
                 )
+                print(f"kw:{scheduler.get_jobs()[job_id].kwargs}")
             except Exception:
                 new_id = f"{job_id}_{hash(os.urandom(4))}"
                 scheduler.add_job(
@@ -252,9 +253,6 @@ async def startup():
     for job in scheduler.get_jobs():
         if job.id.startswith('rem_'):
             kw = job.kwargs
-            print(kw)
-            print(job)
-            print(job.id)
             try:
                 _, gid, time_part, _, _ = job.id.split('_', 4)
                 reminder_jobs[job.id] = {
