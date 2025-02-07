@@ -252,6 +252,8 @@ async def startup():
     for job in scheduler.get_jobs():
         if job.id.startswith('rem_'):
             print(job)
+            print(job.kwargs)
+
             try:
                 _, gid, time_part, _, _ = job.id.split('_', 4)
                 reminder_jobs[job.id] = {
@@ -262,6 +264,7 @@ async def startup():
                     "time": f"{time_part[:2]}:{time_part[2:4]}",
                     "creator": job.kwargs.get('creator', 0)
                 }
+                print(reminder_jobs[job.id])
             except Exception as e:
                 print(f"⚠️ 加载任务失败 [{job.id}]: {str(e)}")
 
