@@ -37,11 +37,23 @@ async def handle_chat(event: MessageEvent):
     context_manager.add_message(event, "user", user_message)
 
     try:
-        # 确保消息列表是交替的 user 和 assistant 消息
-        messages = [{"role": "system", "content": "你是一个乐于助人的助手"}]
-        for msg in history:
-            messages.append(msg)
-        messages.append({"role": "user", "content": user_message})
+        if not history:
+            messages = [
+                {"role": "system", "content": "你是一个乐于助人的助手"},
+                {"role": "user", "content": user_message},
+        ]
+        else:
+            history = history[-10:]  # 只保留最近的 10 条消息
+            cleaned_history = []
+            last_role = None
+            for msg in history:
+                if msg["role"] != last_role:
+                    cleaned_history.append(msg)
+                    last_role = msg["role"]
+            
+            messages = [{"role": "system", "content": "你是一个乐于助人的助手"}]
+            messages.extend(cleaned_history)
+            messages.append({"role": "user", "content": user_message})
 
         # 调用 DeepSeek API
         response = await client.chat.completions.create(
