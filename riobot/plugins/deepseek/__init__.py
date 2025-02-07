@@ -36,12 +36,8 @@ async def handle_chat(event: MessageEvent):
     context_manager.add_message(event, "user", user_message)
 
     try:
-        if messages:
-            messages = history[-9:] 
-        else:
-            messages = [
-                {"role": "user", "content": user_message},
-        ]
+        messages = history[-9:] 
+        messages.append({"role": "user", "content": user_message}) 
         # 调用 API
         response = await client.chat.completions.create(
             model="deepseek-reasoner",
