@@ -29,40 +29,18 @@ clear_cmd = on_command("clear", aliases={"清除历史"}, priority=1)
 
 @chat.handle()
 async def handle_chat(event: MessageEvent):
-    # 获取历史记录
-    history = context_manager.get_history(event)
-    
     # 添加用户消息到上下文
     user_message = event.get_plaintext()
     context_manager.add_message(event, "user", user_message)
-
     try:
-        if not history:
-            messages = [
-                {"role": "system", "content": "你是一个乐于助人的助手"},
-                {"role": "user", "content": user_message},
-        ]
-        else:
-            history = history[-10:]  # 只保留最近的 10 条消息
-            cleaned_history = []
-            last_role = None
-            for msg in history:
-                if msg["role"] != last_role:
-                    cleaned_history.append(msg)
-                    last_role = msg["role"]
-            
-            messages = [{"role": "system", "content": "你是一个乐于助人的助手"}]
-            messages.extend(cleaned_history)
-            messages.append({"role": "user", "content": user_message})
-
+        messages = [{"role": "system", "content": "你是一个乐于助人的助手"}]
+        messages.append({"role": "user", "content": user_message})
         # 调用 DeepSeek API
         response = await client.chat.completions.create(
             model="deepseek-reasoner",
             messages=messages,
             stream=False,
-            temperature=0.7,
         )
-
         # 处理回复
         reply = response.choices[0].message.content
         context_manager.add_message(event, "assistant", reply)
