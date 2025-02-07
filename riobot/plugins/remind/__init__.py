@@ -185,7 +185,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
             response = build_response_message(
                 targets=targets,
                 time_str=f"{hour:02}:{minute:02}",
-                content=content,
+                content="设置成功~",
                 job_id=job_id
             )
             await reminder_set.finish(response)
@@ -291,7 +291,7 @@ async def handle_reminder_list(event: GroupMessageEvent):
     msg = Message()
     msg += MessageSegment.text("📜 当前生效的定时提醒:\n")
     for idx, key in enumerate(task_list, 1):
-        msg += MessageSegment.text(f"{idx}.{key}")
+        msg += MessageSegment.text(f"{idx}.{key}\n")
         msg += MessageSegment.text(f"创建者: {reminder_jobs[key]['creator']}\n\n")
 
     await reminder_list.finish(msg)
