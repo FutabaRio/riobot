@@ -21,12 +21,15 @@ class ChatContextManager:
         session_id = self._get_session_id(event)
         if session_id not in self.contexts:
             self.contexts[session_id] = []
-
-        self.contexts[session_id].append({"role": role, "content": content})
+    
+    # 添加消息时自动清理连续重复角色（可选）
+        if self.contexts[session_id] and self.contexts[session_id][-1]["role"] == role:
+            self.contexts[session_id].pop()
         
-        # 保持历史记录长度
-        if len(self.contexts[session_id]) > self.max_length:
-            self.contexts[session_id] = self.contexts[session_id][-self.max_length:]
+        self.contexts[session_id].append({"role": role, "content": content})
+    
+    # 保持长度（保留最后10条）
+        self.contexts[session_id] = self.contexts[session_id][-self.max_length:]
 
     def clear_history(self, event: MessageEvent):
         session_id = self._get_session_id(event)

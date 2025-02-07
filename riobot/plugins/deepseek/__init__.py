@@ -36,15 +36,11 @@ async def handle_chat(event: MessageEvent):
     context_manager.add_message(event, "user", user_message)
 
     try:
-        if not history:
-            messages = [
+        messages = history[-9:] 
+        messages = [
                 {"role": "user", "content": user_message},
         ]
-        else:
-            history = history[-10:]
-            messages.append({"role": "user", "content": user_message})
-
-        # 调用 DeepSeek API
+                # 调用 API
         response = await client.chat.completions.create(
             model="deepseek-reasoner",
             messages=messages,
@@ -52,11 +48,20 @@ async def handle_chat(event: MessageEvent):
             temperature=0.7,
         )
 
-        # 处理回复
+        # 添加助手回复到上下文
+        reply = response.choices[0].message.content
+        context_manager.add_message(event, "assistant", reply)
+        # 调用 DeepSeek API
+        response = await client.chat.completions.create(
+            model="deepseek-reasoner",
+            messages=messages,
+            stream=False,
+            temperature=0.7,
+        )
+        
         reply = response.choices[0].message.content
         context_manager.add_message(event, "assistant", reply)
         await chat.finish(Message(reply))
-
     except Exception as e:
         raise
 
