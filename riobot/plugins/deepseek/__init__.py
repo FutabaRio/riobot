@@ -40,16 +40,19 @@ async def handle_chat(event: MessageEvent):
     try:
         messages = history[-10:] 
         # 调用 API
+        print(f"messages:{messages}")
         response = await client.chat.completions.create(
             model="deepseek-reasoner",
             messages=messages,
+            stop=['```'],
             stream=False,
         )
-        print(response)
+        print(f"response:{response}")
         reply = response.choices[0].message.content
         context_manager.add_message(event, "assistant", reply)
         await chat.finish(Message(reply))
     except Exception as e:
+        context_manager.add_message(event, "assistant", e)
         raise
 
 @clear_cmd.handle()
