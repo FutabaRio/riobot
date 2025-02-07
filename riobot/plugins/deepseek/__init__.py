@@ -1,3 +1,4 @@
+import os
 from nonebot import on_command, on_message
 from nonebot.plugin import PluginMetadata
 from nonebot.adapters.onebot.v11 import (
@@ -15,10 +16,10 @@ __plugin_meta__ = PluginMetadata(
     usage="查看详细使用说明",
     supported_adapters={"~onebot.v11"},
 )
-DEEPSEEK_API_KEY = "sk-93554d78e7b6416599802ed5fa5c2ff8"
+
 # 配置 OpenAI 客户端
 client = AsyncOpenAI(
-    api_key=DEEPSEEK_API_KEY,
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
     base_url="https://api.deepseek.com",
 )
 # 创建消息处理器
