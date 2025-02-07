@@ -241,10 +241,10 @@ async def startup():
     print("✅ 定时任务系统已启动")
     print(f"✅ 已加载 {len(jobs)} 个定时任务")  # 添加任务数量提示
     # 加载已有任务
-    
     for job in jobs:
         if job.id.startswith('rem_'):
             kw = job.kwargs
+            print(kw)
             try:
                 _, gid, time_part, _, _ = job.id.split('_', 4)
                 reminder_jobs[job.id] = {
