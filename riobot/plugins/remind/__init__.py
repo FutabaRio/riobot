@@ -292,7 +292,7 @@ async def handle_reminder_list(event: GroupMessageEvent):
     msg += MessageSegment.text("📜 当前生效的定时提醒:\n")
     for idx, key in enumerate(task_list, 1):
         msg += MessageSegment.text(f"{idx}.{key}")
-        msg += MessageSegment.text(f"创建者: {reminder_jobs[key]["creator"]}\n\n")
+        msg += MessageSegment.text(f"创建者: {reminder_jobs[key]['creator']}\n\n")
 
     await reminder_list.finish(msg)
 
