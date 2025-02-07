@@ -35,15 +35,16 @@ async def handle_chat(event: MessageEvent):
     context_manager.add_message(event, "user", user_message)
 
     try:
+        # 确保消息列表是交替的 user 和 assistant 消息
+        messages = [{"role": "system", "content": "你是一个乐于助人的助手"}]
+        for msg in history:
+            messages.append(msg)
+        messages.append({"role": "user", "content": user_message})
+
         # 调用 DeepSeek API
         response = await client.chat.completions.create(
-            # model='deepseek-reasoner'
             model="deepseek-reasoner",
-            messages=[
-                {"role": "system", "content": "你是一个乐于助人的助手"},
-                *history,
-                {"role": "user", "content": user_message},
-            ],
+            messages=messages,
             stream=False,
             temperature=0.7,
         )
@@ -54,7 +55,7 @@ async def handle_chat(event: MessageEvent):
         await chat.finish(Message(reply))
 
     except Exception as e:
-        await e
+        raise
 
 @clear_cmd.handle()
 async def handle_clear(event: MessageEvent):
