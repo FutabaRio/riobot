@@ -39,14 +39,13 @@ async def handle_chat(event: MessageEvent):
 
     try:
         messages = history[-10:] 
-        print(messages)
         # 调用 API
         response = await client.chat.completions.create(
             model="deepseek-reasoner",
             messages=messages,
             stream=False,
         )
-
+        print(response)
         reply = response.choices[0].message.content
         context_manager.add_message(event, "assistant", reply)
         await chat.finish(Message(reply))
