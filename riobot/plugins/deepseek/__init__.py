@@ -39,7 +39,6 @@ async def handle_chat(event: MessageEvent):
 
     try:
         messages = history[-10:] 
-        messages.append({"role": "user", "content": user_message}) 
         print(messages)
         # 调用 API
         response = await client.chat.completions.create(
