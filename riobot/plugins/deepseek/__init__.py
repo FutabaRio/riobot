@@ -29,14 +29,16 @@ clear_cmd = on_command("clear", aliases={"清除历史"}, priority=1)
 
 @chat.handle()
 async def handle_chat(event: MessageEvent):
+    user_message = event.get_plaintext()
+
+    context_manager.add_message(event, "user", user_message)
     # 获取历史记录
     history = context_manager.get_history(event)
     # 添加用户消息到上下文
-    user_message = event.get_plaintext()
-    context_manager.add_message(event, "user", user_message)
+    
 
     try:
-        messages = history[-9:] 
+        messages = history[-10:] 
         messages.append({"role": "user", "content": user_message}) 
         print(messages)
         # 调用 API
