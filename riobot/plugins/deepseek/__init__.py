@@ -31,6 +31,7 @@ clear_cmd = on_command("clear", aliases={"清除历史"}, priority=1)
 async def handle_chat(event: MessageEvent):
     # 获取历史记录
     history = context_manager.get_history(event)
+    print(history)
     # 添加用户消息到上下文
     user_message = event.get_plaintext()
     context_manager.add_message(event, "user", user_message)

@@ -22,9 +22,9 @@ class ChatContextManager:
         if session_id not in self.contexts:
             self.contexts[session_id] = []
     
-    # 添加消息时自动清理连续重复角色（可选）
-        if self.contexts[session_id] and self.contexts[session_id][-1]["role"] == role:
-            self.contexts[session_id].pop()
+    # # 添加消息时自动清理连续重复角色（可选）
+    #     if self.contexts[session_id] and self.contexts[session_id][-1]["role"] == role:
+    #         self.contexts[session_id].pop()
         
         self.contexts[session_id].append({"role": role, "content": content})
     
