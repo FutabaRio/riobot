@@ -284,15 +284,15 @@ async def handle_reminder_list(event: GroupMessageEvent):
         key for key in reminder_jobs.keys() 
         if reminder_jobs[key]["type"] == "group" and reminder_jobs[key]["group_id"] == group_id
     ]
-
+    print(f"reminder_jobs:{reminder_jobs}")
     if not task_list:
         await reminder_list.finish("⭕ 当前群组没有定时提醒任务")
-
+    print(f"task_list:{task_list}")
     msg = Message()
     msg += MessageSegment.text("📜 当前生效的定时提醒:\n")
     for idx, key in enumerate(task_list, 1):
         msg += MessageSegment.text(f"{idx}.{key}")
-        msg += MessageSegment.text(f"   创建者: {reminder_jobs[key]['creator']}\n\n")
+        msg += MessageSegment.text(f"创建者: {reminder_jobs[key]["creator"]}\n\n")
 
     await reminder_list.finish(msg)
 
