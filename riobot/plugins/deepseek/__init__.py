@@ -49,10 +49,10 @@ async def handle_chat(event: MessageEvent):
         )
         print(f"response:{response}")
         reply = response.choices[0].message.content
-        context_manager.add_message(event, "assistant", reply)
+        context_manager.add_message(event, "assistant", str(reply))
         await chat.finish(Message(reply))
     except Exception as e:
-        context_manager.add_message(event, "assistant", e)
+        context_manager.add_message(event, "assistant", str(e))
         raise
 
 @clear_cmd.handle()
