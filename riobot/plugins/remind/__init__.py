@@ -151,7 +151,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                     args=(job_id,),
                     id=job_id,
                     replace_existing=True,
-                    kwargs={  # 新增此行
+                    kwargs={
                         "targets": targets,
                         "content": content,
                         "creator": event.user_id,
@@ -159,18 +159,8 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
                         "time": f"{hour:02}:{minute:02}"
                     }
                 )
-                print(f"kw:{scheduler.get_jobs()[job_id].kwargs}")
             except Exception:
-                new_id = f"{job_id}_{hash(os.urandom(4))}"
-                scheduler.add_job(
-                    send_reminder,
-                    'cron',
-                    hour=hour,
-                    minute=minute,
-                    args=(new_id,),
-                    id=new_id
-                )
-                job_id = new_id
+                raise
 
             # 存储任务信息
             reminder_jobs[job_id] = {
@@ -247,10 +237,12 @@ async def send_reminder(job_id: str):
 async def startup():
     """启动时初始化"""
     scheduler.start()
+    jobs = scheduler.get_jobs()
     print("✅ 定时任务系统已启动")
-    print(f"✅ 已加载 {len(scheduler.get_jobs())} 个定时任务")  # 添加任务数量提示
+    print(f"✅ 已加载 {len(jobs)} 个定时任务")  # 添加任务数量提示
     # 加载已有任务
-    for job in scheduler.get_jobs():
+    
+    for job in jobs:
         if job.id.startswith('rem_'):
             kw = job.kwargs
             try:
