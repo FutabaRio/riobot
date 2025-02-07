@@ -256,10 +256,10 @@ async def startup():
                 reminder_jobs[job.id] = {
                     "type": "group",
                     "group_id": int(gid),
-                    "targets": job.kwargs.get('targets', []),
-                    "content": job.kwargs.get('content', ''),
+                    "targets": job.id.kwargs.get('targets', []),
+                    "content": job.id.kwargs.get('content', ''),
                     "time": f"{time_part[:2]}:{time_part[2:4]}",
-                    "creator": job.kwargs.get('creator', 0)
+                    "creator": job.id.kwargs.get('creator', 0)
                 }
             except Exception as e:
                 print(f"⚠️ 加载任务失败 [{job.id}]: {str(e)}")
