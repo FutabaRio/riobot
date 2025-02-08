@@ -109,7 +109,7 @@ async def handle_group_manage(event: GroupMessageEvent, args: Message = CommandA
 # ================
 # 提醒设置功能
 # ================
-reminder_set = on_command("设置提醒", aliases={"add"}, rule=to_me(), priority=5)
+reminder_set = on_command("设置提醒", aliases={"add"}, rule=to_me(), priority=5,block=True)
 
 
 @reminder_set.handle()
