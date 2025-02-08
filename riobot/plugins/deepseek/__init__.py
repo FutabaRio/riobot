@@ -43,7 +43,6 @@ async def handle_chat(event: MessageEvent):
         response = await client.chat.completions.create(
             model="deepseek-chat",
             messages=messages,
-            stop=['```'],
             stream=False,
         )
         reply = response.choices[0].message.content

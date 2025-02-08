@@ -67,10 +67,10 @@ def build_response_message(targets: List[str], time_str: str, content: str, job_
     if targets:
         msg += MessageSegment.text("👥 对象:")
         if 'all' in targets:
-            msg += MessageSegment.at("all")
+            msg += "全体成员"
         else:
             for uid in targets:
-                msg += MessageSegment.at(uid)
+                msg += uid
         msg += "\n"
     msg += MessageSegment.text(f"🔖 ID:{job_id}")
     return msg
@@ -176,7 +176,7 @@ async def handle_reminder_set(bot: Bot, event: Union[MessageEvent, GroupMessageE
             response = build_response_message(
                 targets=targets,
                 time_str=f"{hour:02}:{minute:02}",
-                content="设置成功~",
+                content=content,
                 job_id=job_id
             )
             await reminder_set.finish(response)
