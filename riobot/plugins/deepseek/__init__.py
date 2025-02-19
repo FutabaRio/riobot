@@ -50,7 +50,7 @@ async def handle_chat(event: MessageEvent):
         await chat.finish(Message(reply))
     except Exception as e:
         context_manager.add_message(event, "assistant", str(e))
-        raise
+        
 
 @clear_cmd.handle()
 async def handle_clear(event: MessageEvent):
