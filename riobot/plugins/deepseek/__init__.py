@@ -41,15 +41,19 @@ async def handle_chat(event: MessageEvent):
         messages = history[-10:] 
         # 调用 API
         response = await client.chat.completions.create(
-            model="deepseek-chat",
+            model="deepseek-reasoner",
             messages=messages,
             stream=False,
+            temperature=0.7,
+            max_tokens=500,
         )
         reply = response.choices[0].message.content
+        if "FinishedException" in reply:
+            reply = reply.replace("FinishedException", "").strip()
         context_manager.add_message(event, "assistant", str(reply))
         await chat.finish(Message(reply))
     except Exception as e:
-        context_manager.add_message(event, "assistant", str(e))
+        raise
         
 
 @clear_cmd.handle()
