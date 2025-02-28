@@ -45,7 +45,7 @@ async def handle_chat(event: MessageEvent):
             messages=messages,
             stream=False,
             temperature=0.7,
-            max_tokens=500,
+            max_tokens=2000,
         )
         reply = response.choices[0].message.content
         if "FinishedException" in reply:
